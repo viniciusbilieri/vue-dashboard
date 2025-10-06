@@ -19,19 +19,13 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
 
-      - name: Enable Corepack (uses version from package.json)
-        run: corepack enable
+      - name: Enable pnpm via Corepack
+        run: corepack prepare pnpm@9 --activate
 
-      - name: Install deps (frozen)
-        run: pnpm install --frozen-lockfile
-
-      # Escolha seu gerenciador de pacotes. Exemplo com pnpm:
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - name: Install deps
-        run: pnpm i --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Typecheck & Lint
         run: pnpm typecheck && pnpm lint || true  # não falha o deploy se houver aviso
