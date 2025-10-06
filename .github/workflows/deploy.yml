@@ -19,12 +19,10 @@ jobs:
         with:
           node-version: 20
           cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
 
-      # Configura o pnpm antes do primeiro uso
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
-          run_install: false
+      - name: Enable pnpm via Corepack
+        run: corepack prepare pnpm@9 --activate
 
       - name: Install deps
         run: pnpm install --frozen-lockfile
