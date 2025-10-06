@@ -15,23 +15,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v3
+        with:
+          version: 9
+          run_install: false
+
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: 'pnpm'
+          cache-dependency-path: pnpm-lock.yaml
 
-      - name: Enable Corepack (uses version from package.json)
-        run: corepack enable
-
-      - name: Install deps (frozen)
-        run: pnpm install --frozen-lockfile
-
-      # Escolha seu gerenciador de pacotes. Exemplo com pnpm:
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 9
       - name: Install deps
-        run: pnpm i --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Typecheck & Lint
         run: pnpm typecheck && pnpm lint || true  # não falha o deploy se houver aviso
